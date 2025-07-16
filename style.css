@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  background: radial-gradient(circle at center, #000 0%, #111 100%);
+  color: white;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+}
+
+canvas {
+  display: block;
+  margin: 20px auto;
+  background: #000;
+  border: 2px solid white;
+  box-shadow: 0 0 20px lime;
+}
