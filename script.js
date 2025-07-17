@@ -2,18 +2,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
 
-  const bgMusic = new Audio('MBR701 BGM.wav'); // Rename your file to this!
+  const bgMusic = new Audio('MBR701 BGM.wav');
   bgMusic.loop = true;
   bgMusic.volume = 0.3;
 
   const shootSound = new Audio('shoot.wav');
 
   const ship = {
-    x: canvas.width / 2 - 25,
+    x: canvas.width / 2 - 20,
     y: canvas.height - 60,
-    width: 50,
-    height: 30,
-    speed: 5
+    width: 40, // smaller hitbox
+    height: 25,
+    speed: 4 // slightly slower
   };
 
   const bullets = [];
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let spawnTimer = 0;
   let score = 0;
   let level = 1;
-  let lives = 3;
+  let lives = 5; // Increased lives for beginners
 
   // Input handling
   window.addEventListener('keydown', (e) => {
@@ -35,13 +35,12 @@ document.addEventListener("DOMContentLoaded", function () {
         y: ship.y,
         width: 4,
         height: 10,
-        speed: 7
+        speed: 6 // slightly slower bullets
       });
       shootSound.currentTime = 0;
       shootSound.play();
     }
 
-    // First interaction triggers music
     bgMusic.play().catch(() => {});
   });
 
@@ -79,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ctx.fillStyle = 'lime';
       ctx.fillRect(e.x, e.y, e.width, e.height);
 
-      // Check collision with bullets
+      // Bullet collision
       for (let j = bullets.length - 1; j >= 0; j--) {
         const b = bullets[j];
         const hit =
@@ -108,13 +107,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Spawn enemies
     spawnTimer++;
-    if (spawnTimer > 60 - level * 5) {
+    const spawnRate = Math.max(90 - level * 5, 30); // slower spawning early
+    if (spawnTimer > spawnRate) {
       enemies.push({
         x: Math.random() * (canvas.width - 40),
         y: -30,
         width: 40,
         height: 30,
-        speed: 1 + level * 0.5
+        speed: 0.6 + level * 0.3 // slower base enemy speed
       });
       spawnTimer = 0;
     }
